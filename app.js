@@ -11,4 +11,4 @@ connectDB();
 configExpress(app);
 routes(app);
 
-module.exports = { app, server };
+module.exports = { app };

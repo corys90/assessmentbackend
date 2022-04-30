@@ -3,10 +3,9 @@ const controllers = require("./favs.controller");
 
 const router = Router();
 
-router.get("/", controllerGetAllList);
-router.post("/", controllerPostNewList);
-router.get("/:id", controllerGetSingleList);
-router.delete("/:id", controllerDeletesSingleList);
-router.post("/login", controllerLogin);
+router.get("/", controllers.controllerGetAllList);
+router.post("/", controllers.controllerPostNewList);
+router.get("/:id", controllers.controllerGetSingleList);
+router.delete("/:id", controllers.controllerDeletesSingleList);
 
 module.exports = router;
