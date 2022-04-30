@@ -1,0 +1,22 @@
+{
+  "name": "assesmentackend",
+  "version": "1.0.0",
+  "description": "Actividad del Bootcamp para tareas en el backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corys90/AssestmentBackend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/corys90/AssestmentBackend/issues"
+  },
+  "homepage": "https://github.com/corys90/AssestmentBackend#readme"
+}
