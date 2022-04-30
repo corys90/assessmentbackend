@@ -3,7 +3,7 @@ const authLocal = require("./auth/local");
 
 function routes(app) {
   app.use("/api/favs", player);
-  app.use("/auth/local/login", authLocal);
+  app.use("/auth/local", authLocal);
 }
 
 module.exports = routes;

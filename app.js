@@ -8,7 +8,6 @@ const connectDB = require("./config/database");
 const app = express();
 
 connectDB();
-connectSocket(server);
 configExpress(app);
 routes(app);
 
