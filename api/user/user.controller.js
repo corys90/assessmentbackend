@@ -1,9 +1,5 @@
 
-const {
-  createUser,
-  getUserEmail,
-} = require("./user.service");
-
+const { createUser, getUserEmail } = require("./user.service");
 
 
 // Controladora de endpoint POST /api/favs/createuser que crea un user 

@@ -48,6 +48,6 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
 };
 
 
-const User = mongoose.model("User", Userchema);
+const User = mongoose.model("users", UserSchema);
 
 module.exports = User;
