@@ -1,34 +1,42 @@
 const { getUserEmail } = require("../../api/user/user.service");
 
+const { signToken } = require("../auth.services");
 
-function controllerLogin(req, res) {
+async function controllerLogin(req, res) {
 
     const { email, password } = req.body;
-    try {
-      const user = await getUserEmail(email);
-  
-      if (!player) {
-        return res
-          .status(401)
-          .json({ status: 401, message: "Correo o contraseña inválidos, por favor verifica de nuevo" });
-      } else if (!player.state) {
-        return res
-          .status(401)
-          .json({ status: 401, message: "No has activado tu cuenta, verifica tu bandeja de entrada (no olvides revisar tus mensajes de spam)" });
+
+    if (email && password){
+
+      try {
+        const user = await getUserEmail(email);
+        if (!user) {
+          return res
+            .status(401)
+            .json({ status: 401, message: "Correo o contraseña inválidos, por favor verifica de nuevo" });
+        } 
+
+        const isMatch = await user.comparePassword(password);
+
+        if (!isMatch) {
+          return res
+            .status(401)
+            .json({ status: 401, message: "Correo o contraseña inválidos, por favor verifica de nuevo" });
+        }
+    
+        const token = await signToken(user.email);
+        return res.status(200).json({"Bearer": token});
+      } catch (error) {
+        console.log("Error: ", error);
+        return res.status(400).json(error);
       }
-  
-      const isMatch = await player.comparePassword(password);
-      if (!isMatch) {
-        return res
-          .status(401)
-          .json({ status: 401, message: "Correo o contraseña inválidos, por favor verifica de nuevo" });
-      }
-  
-      const token = signToken(player.profile);
-      return res.status(200).json({token});
-    } catch (error) {
-      return res.status(400).json(error);
+    }else{
+      return res
+      .status(404)
+      .json({ status: 404, message: "email o password son campos obligatorios." });
     }
+
+
 }
 
 module.exports = { controllerLogin };

@@ -2,7 +2,7 @@
 const { getListFavorites, createList, getListById, delListById, addItemListById } = require("../fav/fav.service");
 
 // Controladora de endpoint GET /api/favs que devuelve lista de fav de un usuario
-function controllerGetAllList(req, res) {
+async function controllerGetAllList(req, res) {
 
     const favs = await getListFavorites();
     res.status(200).json(favs);
@@ -10,8 +10,8 @@ function controllerGetAllList(req, res) {
 }
 
   // Controladora de endpoint POST /api/favs que inserta una lista de fav de un usuario
-function controllerPostNewList(req, res) {
-
+async function controllerPostNewList(req, res) {
+    console.log("Crea lista con : ", req.body)
     if (!req.body.name || !req.body.favList || !req.body.id_user){
         return res
         .status(400)
@@ -23,31 +23,48 @@ function controllerPostNewList(req, res) {
 }
   
   // Controladora de endpoint GET /api/favs/:id que devuelve lista de fav de un usuario según id
-function controllerGetSingleList(req, res) {
-
-    if (!req.params.id){
+  async function controllerGetSingleList(req, res) {
+    console.log("Ver lista: ", req.params.id);
+    if (req.params.id){
         const lista = await getListById(req.params.id);
-        return res.status(200).json({status: 200, message: "Success", lista });
+        if (lista.status === 200){
+            const item = lista.item;
+            return res.status(200).json({status: 201, message: "Success",  item});
+        }else{
+            return res.status(404).json({status: 404, message: "Lista no existe "});
+        }
+
     }else{
         return res.status(404).json({ status: 404, message: "Se requiere id de la lista" });
     }
 }
   
   // Controladora de endpoint DELETE /api/favs/:id que elimina una lista de fav segun id
-function controllerDeletesSingleList(req, res) {
-    if (!req.params.id){
+  async function controllerDeletesSingleList(req, res) {
+    console.log("Lista a Borrar: ", req.params.id);
+    if (req.params.id){
         const lista = await delListById(req.params.id);
-        return res.status(200).json({status: 200, message: "Success", lista });
+        console.log("Resultado: ", lista);
+        if (lista.status === 200){
+            return res.status(200).json({status: 200, message: "Success"});
+        }else{
+            return res.status(404).json({status: 404, message: "Lista no existe!!!"});
+        }
     }else{
         return res.status(404).json({ status: 404, message: "Se requiere id de la lista" });
     }
 }
 
 // Controladora de endpoint POST /api/favs/additem/:id que inserta un artículo a una lista según id
-function controllerPostAddItemList(req, res) {
-    if (!req.body.idList || !req.body.title || !req.body.description || !req.body.link){
+async function controllerPostAddItemList(req, res) {
+    if (req.body.idList && req.body.title && req.body.description && req.body.link){
+        console.log("Item a añadir: ", req.body);
         const lista = await addItemListById(req.body);
-        return res.status(200).json({status: 200, message: "Success", lista });
+        if (lista.status === 201){
+            return res.status(201).json(lista);
+        }else{
+            return res.status(404).json(lista);    
+        }
     }else{
         return res.status(404).json({ status: 404, message: "Se requiere idList, title, description y link" });
     }

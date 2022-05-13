@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-const URI = process.env.MONGO_DB_URI;
+const URI = "mongodb://localhost:27017";
 
-async function connectDB() {
+async  function connectDB() {
   try {
-    await mongoose.connect(URI);
-    console.log("Data server connected!");
+    await mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log("Conectado de MongoDB!!!");
   } catch (error) {
-    console.error(error);
+    console.error(" Error al conectar a MongoDB : ", error);
     process.exit(1);
   }
 }

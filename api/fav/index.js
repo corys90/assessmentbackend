@@ -6,14 +6,14 @@ const { controllerGetAllList,
     controllerPostAddItemList, 
 } = require("./fav.controller");
 
-//const { isAuthenticated } = require("../../auth/auth.services");
+const { isAuthenticated } = require("../../auth/auth.services");
 
 const router = Router();
 
-router.get("/",  controllerGetAllList); // Obtiene la lista de favoritos de toda la BD
-router.post("/",  controllerPostNewList); // crea un alista con los articulos favoritos de un usuario
-router.post("/additem",  controllerPostAddItemList); // Añada un articulo a la lista favoritos especificada
-router.get("/:id",  controllerGetSingleList); // Obtiene una lista de favoritos específica
-router.delete("/:id",  controllerDeletesSingleList); // Borra una lista de favoritos especificada
+router.get("/", isAuthenticated, controllerGetAllList); // Obtiene la lista de favoritos de toda la BD - Ok
+router.post("/", isAuthenticated, controllerPostNewList); // crea una lista con los articulos favoritos de un usuario - Ok
+router.post("/additem", isAuthenticated, controllerPostAddItemList); // Añada un articulo a la lista favoritos especificada - Ok
+router.get("/:id", isAuthenticated, controllerGetSingleList); // Obtiene una lista de favoritos específica - Ok
+router.delete("/:id", isAuthenticated, controllerDeletesSingleList); // Borra una lista de favoritos especificada - Ok
 
 module.exports = router;

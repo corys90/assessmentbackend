@@ -32,12 +32,12 @@ UserSchema.pre("save", async function (next) {
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(player.password, salt);
+    const hash = await bcrypt.hash(user.password, salt);
 
     user.password = hash;
     return next();
   } catch (error) {
-      Console.log("Error con el modelo:" + error); 
+      console.log("Error con el modelo:" + error); 
     return next(error);
   }
 });

@@ -1,43 +1,40 @@
 const jsonwebtoken = require("jsonwebtoken");
-const compose = require("composable-middleware");
-const { getUserEmail } = require("../api/user/user.service");
 
 async function validateToken(token) {
   try {
-    const payload = await jsonwebtoken.verify(token, "secret_token");
+    const payload = await jsonwebtoken.verify(token, "assesment-backend");
     return payload;
   } catch (error) {
     return null;
   }
 }
 
-function isAuthenticated(req, res, next) {
+async function isAuthenticated(req, res, next) {
 
-  return compose().use(async (req, res, next) => {
-    const autHeader = req.headers.authorization;
-    if (!autHeader) {
-      return res.status(401).end();
-    }
-    const [, token] = autHeader.split(" ");
-    const payload = await validateToken(token);
-
-    if (!payload) {
-      return res.status(401).end();
-    }
-    const player = await getUserEmail(payload.email);
-
-    if (!player) {
-      return res.status(401).end();
-    }
-
-    req.player = player;
-    next();
-    return null;
-  });
+  console.log("Autenticaciôn: ", !req.headers.authorization);
+  if (!req.headers.authorization) {
+    return res.status(401).end({message:'Autorización fallida. Token es obligatorio'});
+  }else{
+      try {
+        const autHeader = req.headers.authorization;
+        const token = autHeader.split(" ")[1];
+        const payload = await validateToken(token);
+        console.log("Payload: ", payload);
+        if (!payload) {
+          return res.status(401).end({message:'Autorización fallida. Token no válido'});
+        }
+        else{
+          next();
+          return null;
+        }
+      } catch (error) {
+        return res.status(401).end({message:'Autorización fallida. Token no válido'});
+      }
+  }
 }
 
-function signToken(payload) {
-  const token = jsonwebtoken.sign(payload, "secret_token", { expiresIn: "2d" });
+async function signToken(payload) {
+  const token = jsonwebtoken.sign(payload, "assesment-backend");
   return token;
 }
 

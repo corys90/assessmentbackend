@@ -1,4 +1,4 @@
-const favoritesModel = require("./user.model");
+const favoritesModel = require("../fav/fav.model");
 
 async function getListFavorites() {
   const favs = await favoritesModel.find({});
@@ -11,22 +11,45 @@ async function createList(data) {
 }
 
 async function getListById(idList) {
-  const list = await favoritesModel.findOne({ _id: idList });
-  return list;
+
+  try {
+    const item = await favoritesModel.findOne({ _id: idList });
+    return ({ status: 200, item });
+
+  } catch (error) {
+    return ({ status: 404 });
+  }
+
 }
 
 async function delListById(idList) {
-  const list = await favoritesModel.deleteOne({ _id: idList });
-  return list;
+
+  try {
+    const list = await favoritesModel.deleteOne({ _id: idList });
+    if (list.deletedCount > 0)
+      return ({ status: 200, list });
+    else
+      return ({ status: 404, list });
+
+  } catch (error) {
+    return ({ status: 404 });
+  }
+
+}
+
+async function updateList(list) {
+  const lista = await favoritesModel.findByIdAndUpdate({ _id: list._id }, { $set: list })
+  return lista;
 }
 
 async function addItemListById({idList, title, description, link}) {
   const list = await getListById(idList);
-  if (list){
-    list.favList.push({title:title, description:description, link:link});
-    return list;
+  if (list.status === 201){
+    list.item.favList.push({title:title, description:description, link:link});
+    const lUpdate = updateList(list.item);
+    return ({status: 201, message: "Ítem añadido exitosamente!!!", lUpdate });
   }else{
-    return res.status(404).json({ status: 404, message: "La lista no está creada" });
+    return ({ status: 404, message: "La lista no está creada" });
   }
 }
 
