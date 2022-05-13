@@ -71,6 +71,7 @@ async function controllerPostAddItemList(req, res) {
 }
 
 
+// eslint-disable-next-line no-undef
 module.exports = {
     controllerGetAllList,
     controllerGetSingleList,
