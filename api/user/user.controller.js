@@ -1,6 +1,7 @@
 var validator = require('validator');
 const { createUser, getUserEmail } = require("./user.service");
 
+
 // Controladora de endpoint POST /api/favs/createuser que crea un user 
 async function controllerPostCreateNewUser(req, res) {
  console.log("Create user : ", req.body);

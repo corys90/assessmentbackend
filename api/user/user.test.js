@@ -23,10 +23,11 @@ describe("Test endpoints User and funcionalidades  ", ()=>{
    describe("Request POST to create a new user", ()=>{ 
         it("Should return a statuscode 200 and the user created", async()=>{
           const respuesta = await request.post('/api/user/createuser')
-          .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiJ9.Y29yeXM5MEBob3RtYWlsLmNvbQ.4aUgyWGMn99spG2ujO9Z8k7_vMIdXwkg0c4NKyGzemA')
+          .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiJ9.Y29yeXM5MEBnbWFpbC5jb20.EJd-GySORX9_MgjAr1uioT7kFZ3ZOs8xvskpP-6H9Aw')
           .set('Content-Type', 'application/json')
           .send({"email":"cristian@controllerGetSingleList.com", "password":"Testing.09","name":"User virtual testing"});
           expect(respuesta.statusCode).toEqual(201);
+          expect(respuesta.body.name).toEqual("User virtual testing");
         })
     });  
 });

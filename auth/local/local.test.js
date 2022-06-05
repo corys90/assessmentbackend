@@ -23,9 +23,18 @@ describe("Test endpoints auth for login function", ()=>{
         it("Should return a statuscode 200 and the token if goes well", async()=>{
           const respuesta = await request.post('/auth/local/login')
           .set('Content-Type', 'application/json')
-          .send({"email":"corys90@hotmail.com", "password":"cris.09"});
+          .send({"email":"corys90@gmail.com", "password":"Qwerty.009"});
           expect(respuesta.statusCode).toEqual(200);
         })
     });  
+
+    describe("Request POST to loggin into the system", ()=>{ 
+      it("Should return a token in body if goes well", async()=>{
+        const respuesta = await request.post('/auth/local/login')
+        .set('Content-Type', 'application/json')
+        .send({"email":"corys90@gmail.com", "password":"Qwerty.009"});
+        expect(respuesta.body.Bearer).not.toBeUndefined();
+      });
+    })  
 });
   
